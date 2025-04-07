@@ -7,13 +7,19 @@
 #if os(iOS)
 import SwiftUI
 
-struct VerticalPager<T: Hashable, Content: View>: View {
+public struct VerticalPager<T: Hashable, Content: View>: View {
     @Binding var selection: T
     @ViewBuilder var content: () -> Content
     @GestureState private var dragOffset: CGFloat = 0
     
     @State private var tags: [T] = []
-    var body: some View {
+    
+    public init(selection: Binding<T>, @ViewBuilder content: @escaping () -> Content) {
+        self._selection = selection
+        self.content = content
+    }
+    
+    public var body: some View {
         ScrollViewReader { proxy in
             content()
                 .onPreferenceChange(VerticalPagerPreferensKey<T>.self) {
@@ -44,6 +50,7 @@ struct VerticalPager<T: Hashable, Content: View>: View {
         }
         
     }
+    
     private func moveToNextPage() {
         if let currentIndex = tags.firstIndex(of: selection), currentIndex < tags.count - 1 {
             selection = tags[currentIndex + 1]
