@@ -8,8 +8,8 @@
 import SwiftUI
 
 extension View {
-    public func pageTag<T: Hashable>(_ tag: T) -> some View {
-        modifier(PageView(tag: tag))
+    public func pageTag<T: Hashable>(_ tag: T, height: CGFloat) -> some View {
+        modifier(PageView(tag: tag, height: height))
             .preference(key: VerticalPagerPreferensKey<T>.self, value: [tag])
     }
 }
