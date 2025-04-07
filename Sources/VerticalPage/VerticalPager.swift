@@ -9,13 +9,20 @@ import SwiftUI
 
 public struct VerticalPager<T: Hashable, Content: View>: View {
     @Binding var selection: T
+    @Binding var isScrolling: Bool
+    
     @ViewBuilder var content: () -> Content
     @GestureState private var dragOffset: CGFloat = 0
     
     @State private var tags: [T] = []
     
-    public init(selection: Binding<T>, @ViewBuilder content: @escaping () -> Content) {
+    public init(
+        selection: Binding<T>,
+        isScrolling: Binding<Bool>,
+        @ViewBuilder content: @escaping () -> Content
+    ) {
         self._selection = selection
+        self._isScrolling = isScrolling
         self.content = content
     }
     
@@ -28,6 +35,9 @@ public struct VerticalPager<T: Hashable, Content: View>: View {
                 }
                 .simultaneousGesture(
                     DragGesture()
+                        .onChanged { value in
+                            isScrolling = true
+                        }
                         .updating($dragOffset) { value, state, _ in
                             state = value.translation.height
                         }
@@ -39,6 +49,10 @@ public struct VerticalPager<T: Hashable, Content: View>: View {
                                 moveToNextPage()
                             } else {
                                 moveToPreviousPage()
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                                isScrolling = false
                             }
                         }
                 )

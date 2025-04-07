@@ -10,9 +10,10 @@ import SwiftUI
 struct PreviewVerticalPager: View {
     @State var slection: Int = 0
     @State var itemHeight: CGFloat = 700
+    @State private var isScrolling: Bool = false
     
     var body: some View {
-        VerticalPager(selection: $slection) {
+        VerticalPager(selection: $slection, isScrolling: $isScrolling) {
             ScrollView {
                 Text("Hello, World! 0")
                     .pageTag(0, height: itemHeight)
