@@ -17,7 +17,6 @@ struct PageView<T: Hashable>: ViewModifier {
                 width: UIScreen.main.bounds.width,
                 height: UIScreen.main.bounds.height
             )
-            .edgesIgnoringSafeArea(.top)
     }
 }
 #endif

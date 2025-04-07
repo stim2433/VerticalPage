@@ -22,6 +22,7 @@ public struct VerticalPager<T: Hashable, Content: View>: View {
     public var body: some View {
         ScrollViewReader { proxy in
             content()
+                .edgesIgnoringSafeArea(.top)
                 .onPreferenceChange(VerticalPagerPreferensKey<T>.self) {
                     tags = $0
                 }
